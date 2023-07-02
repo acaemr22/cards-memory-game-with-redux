@@ -496,14 +496,31 @@ const gameSlice = createSlice({
         state.gameFinished = true;
       }
     },
+    closeAllCards: (state, action) => {
+      state.cardInfos = state.cardInfos.map((cardInfo) => ({
+        ...cardInfo,
+        found: false,
+        opened: false,
+      }));
+    },
     playAgain: (state, action) => {
-      state.cardInfos = state.initialCardInfos;
+      const renewedCards = [];
+      const initialCardInfos = [...state.initialCardInfos];
+      const maxLength = initialCardInfos.length;
+      for (let i = 0; i < maxLength; i++) {
+        const index = Math.ceil(Math.random() * (initialCardInfos.length - 1));
+        renewedCards.push(initialCardInfos[index]);
+        initialCardInfos.splice(index, 1);
+        console.log(initialCardInfos);
+      }
+      state.cardInfos = renewedCards;
       state.gameFinished = false;
       state.pointsArr.push(state.points);
       state.points = 0;
+      state.openedCards = []
     },
   },
 });
 
-export const { toggleCard, playAgain, checkOpenedCards } = gameSlice.actions;
+export const { toggleCard, playAgain, checkOpenedCards, closeAllCards } = gameSlice.actions;
 export default gameSlice.reducer;
