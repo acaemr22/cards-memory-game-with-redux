@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import CardTable from "./components/CardTable";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { playAgain, closeAllCards } from "./features/game/gameSlice";
+import { playAgain, closeAllCards, initGame } from "./features/game/gameSlice";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -14,6 +14,10 @@ function App() {
   const highestScore = useSelector((state) =>
     Math.max(...[...state.game.pointsArr, 0])
   );
+
+  useEffect(() => {
+    dispatch(initGame());
+  }, []);
 
   return (
     <main className="">
